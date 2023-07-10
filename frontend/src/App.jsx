@@ -1,35 +1,76 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { React,useState,useEffect } from 'react'
+import SingleTodoComponent from './SingleTodoComponent';
+import InputComponent from './inputComponent';
+
+
+import Card from '@mui/material/Card';
+
+import Typography from '@mui/material/Typography';
+
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [todos, setTodos] = useState([]);
+
+
+
+  useEffect(()=>{
+    fetch("http://localhost:3000/todos",{
+      method:"GET",
+      headers:{
+        "Content-Type":"application/json"
+      }
+    })
+    .then(res=>res.json())
+    .then(data=>setTodos(data.todos))
+    .catch(err=>console.log(err));
+  },[])
+  console.log("render");
+  
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div 
+    id='main' 
+    style={{width:"100vw", height:"100vh", backgroundColor: "#98b5ff", display:"flex", justifyContent:"center"}}
+    >
+      <Card 
+        sx={{
+          backgroundColor:"#344fa1", 
+          borderRadius:"25px", 
+          margin:"50px" 
+        }}
+      >
+        <Typography 
+          variant="h4" 
+          gutterBottom 
+          sx={{color:"white", marginTop:"20px", marginLeft:"20px"}}
+        >
+          Hello User!
+        </Typography>
+        <InputComponent></InputComponent>
+        <Typography 
+          variant="overline" 
+          display="block" 
+          gutterBottom 
+          sx={{color:"#8d93b5", marginTop:"10px", marginLeft:"20px"}}
+        >
+          List of Todos
+        </Typography>
+        {todos.map((todo)=>{
+          return(
+            <SingleTodoComponent key={todo.id} description={todo.description} id={todo._id}/>
+          );
+        })}
+      </Card>
+    </div>
+     </>
   )
 }
 
-export default App
+export default App;
