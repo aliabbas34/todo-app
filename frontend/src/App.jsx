@@ -31,7 +31,7 @@ function App() {
     .catch(err=>console.log(err));
   },[])
   console.log("render");
-  
+  console.log(todos);
 
   return (
     <>
@@ -53,7 +53,7 @@ function App() {
         >
           Hello User!
         </Typography>
-        <InputComponent></InputComponent>
+        <InputComponent todo={todos} setTodo={setTodos}></InputComponent>
         <Typography 
           variant="overline" 
           display="block" 
@@ -62,9 +62,9 @@ function App() {
         >
           List of Todos
         </Typography>
-        {todos.map((todo)=>{
+        {todos.map((todo,index)=>{
           return(
-            <SingleTodoComponent key={todo.id} description={todo.description} id={todo._id}/>
+            <SingleTodoComponent key={todo.id} todo={todos} setTodo={setTodos} description={todo.description} id={todo._id} n={index}/>
           );
         })}
       </Card>

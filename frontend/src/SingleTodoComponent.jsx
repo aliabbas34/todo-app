@@ -16,10 +16,18 @@ function SingleTodoComponent(props){
     )
 
     function ComponentWithPencil(){
-      const handleDeleteClick=()=>{
-        fetch(`http://localhost:3000/todos/${props.id}`,{method:"DELETE"})
+      const handleDeleteClick=async ()=>{
+        console.log(props.todo);
+        console.log(props.id);
+        await fetch(`http://localhost:3000/todos/${props.id}`,{method:"DELETE"})
         .then(response=>response.json())
-        .then(data=>alert(data.message))
+        .catch(err=>console.log(err,"err here1"))
+        .then(data=>{
+          let t=props.todo;
+          t.splice(props.n,1);
+          props.setTodo([...t]);
+          console.log(data.message);
+        })
         .catch(err=>console.log(err, "error in delete"));
       }
       return(

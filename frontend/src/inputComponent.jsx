@@ -1,17 +1,16 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-function InputComponent(){
+function InputComponent(props){
     
 
     const onSubmit=e=>{
-      
+        e.preventDefault();
         const description=document.getElementById('inputBoxDescription').value;
         if(description===""){
           alert("field is empty");
         }
         else{
            let tod={"description":description};
-           console.log(tod);
           fetch("http://localhost:3000/todos",{
             method:"POST",
             headers:{
@@ -19,7 +18,9 @@ function InputComponent(){
             },
             body:JSON.stringify(tod)
           }).then(response=>response.json())
-          .then(response=>alert(response.message))
+          .then(response=>{
+            props.setTodo([...props.todo,tod]);
+          })
           .catch((err)=>console.log(err, "error here"));
         }
     }
