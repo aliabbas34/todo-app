@@ -17,8 +17,6 @@ function SingleTodoComponent(props){
 
     function ComponentWithPencil(){
       const handleDeleteClick=async ()=>{
-        console.log(props.todo);
-        console.log(props.id);
         await fetch(`http://localhost:3000/todos/${props.id}`,{method:"DELETE"})
         .then(response=>response.json())
         .catch(err=>console.log(err,"err here1"))

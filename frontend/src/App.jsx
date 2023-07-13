@@ -64,7 +64,7 @@ function App() {
         </Typography>
         {todos.map((todo,index)=>{
           return(
-            <SingleTodoComponent key={todo.id} todo={todos} setTodo={setTodos} description={todo.description} id={todo._id} n={index}/>
+            <SingleTodoComponent key={todo.id} todo={todos} setTodo={setTodos} description={todo.description} id={todo.id} n={index}/>
           );
         })}
       </Card>

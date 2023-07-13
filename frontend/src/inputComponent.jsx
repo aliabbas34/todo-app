@@ -19,6 +19,7 @@ function InputComponent(props){
             body:JSON.stringify(tod)
           }).then(response=>response.json())
           .then(response=>{
+            tod={...tod,"id":response.todoId};
             props.setTodo([...props.todo,tod]);
           })
           .catch((err)=>console.log(err, "error here"));

@@ -39,7 +39,7 @@ mongoose.connect(process.env.DBURL,{useNewUrlParser:true,useUnifiedTopology:true
     };
     const newTodo=new Todos(todo);
     await newTodo.save();
-    res.status(201).json({message:'successfully Created.'});
+    res.status(201).json({message:'successfully Created.',todoId:todo.id});
   }
   });
 
@@ -59,7 +59,7 @@ mongoose.connect(process.env.DBURL,{useNewUrlParser:true,useUnifiedTopology:true
 
   app.delete('/todos/:id',async (req, res) => {
     // - Delete a todo item by ID
-    await Todos.deleteOne({_id:req.params.id});
+    await Todos.deleteOne({id:req.params.id});
     res.status(200).json({message:"succesfully deleted"});
   });
 
