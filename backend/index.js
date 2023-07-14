@@ -48,7 +48,7 @@ mongoose.connect(process.env.DBURL,{useNewUrlParser:true,useUnifiedTopology:true
     // - Update an existing todo item by ID
     if(!req.body.description) res.status(301).json({message:"field empty"});
     else{
-      let todo=await Todos.findByIdAndUpdate(req.params.id,req.body,{new:true});
+      let todo=await Todos.findOneAndUpdate({id:req.params.id},req.body,{new:true});
       if(todo){
         res.status(200).json({message:"Updated successfully"});
       }

@@ -1,16 +1,20 @@
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useState } from 'react';
 function InputComponent(props){
     
-
+  const [inputValue,setinputValue]=useState("");
+  const handleChange=e=>{
+    setinputValue(e.target.value);
+  }
     const onSubmit=e=>{
         e.preventDefault();
-        const description=document.getElementById('inputBoxDescription').value;
-        if(description===""){
+        if(inputValue===""){
           alert("field is empty");
         }
         else{
-           let tod={"description":description};
+           let tod={"description":inputValue};
+           
           fetch("http://localhost:3000/todos",{
             method:"POST",
             headers:{
@@ -23,6 +27,9 @@ function InputComponent(props){
             props.setTodo([...props.todo,tod]);
           })
           .catch((err)=>console.log(err, "error here"));
+
+          setinputValue("");
+
         }
     }
     return (
@@ -41,7 +48,10 @@ function InputComponent(props){
               "& .MuiFormLabel-root":{color:'#8d93b5'},/*label color */
               borderRadius:"10px", 
               marginLeft:"7px"
-              }}/>
+              }}
+              value={inputValue}
+              onChange={handleChange}
+              />
             <Button onClick={onSubmit} variant="contained" sx={{margin:"7px", height:"40px"}}>Add todo</Button>
         </div>
     )

@@ -4,6 +4,7 @@ import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import Typography from '@mui/material/Typography';
+import TextField from '@mui/material/TextField';
 
 function SingleTodoComponent(props){
   const [displayUpdate, setdisplayUpdate]=useState(false);
@@ -43,18 +44,45 @@ function SingleTodoComponent(props){
 
 
     function ComponentWithUpArrow(){
+      let val=props.description;
+      const handleChange=(e)=>{
+        val=e.target.value;
+      }
       return(
         <div style={{display:"flex", justifyContent:"space-between"}}>
-          <input type="text" id="updateInput" style={{width:"100%", color:"whitesmoke", backgroundColor:"#031956", margin:"7px"}} />
+          <TextField
+            variant="outlined" 
+            sx={{
+              "& .MuiInputBase-root": {//style for input box
+                color: 'white', 
+                height:40,
+                maxWidth:400,
+                width:280,
+                backgroundColor:"#031956"
+                },
+              }}
+              defaultValue={val}
+              onChange={handleChange}
+              />
           <ArrowUpwardIcon onClick={()=>{
             fetch(`http://localhost:3000/todos/${props.id}`,{
               method:"PUT",
               headers:{
                 "Content-Type":"Application/json"
               },
-              body:JSON.stringify({description:document.getElementById('updateInput').value})
+              body:JSON.stringify({description:val})
             }).then(response=>response.json())
-            .then(data=>alert(data.message))
+            .then(data=>{
+              let t=[...props.todo];
+              for(let i=0;i<t.length;i++){
+                if(t[i].id===props.id){
+                  t[i].description=val;
+                  break;
+                }
+              }
+              props.setTodo([...t]);
+              console.log(data.message);
+            })
             .catch(err=>console.log(err,"error in update"));
             setdisplayUpdate(false);
           }
